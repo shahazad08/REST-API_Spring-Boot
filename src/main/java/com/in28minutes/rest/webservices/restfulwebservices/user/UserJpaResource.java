@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 public class UserJpaResource {
-    UserDaoService service;
+    //UserDaoService service;
 
     UserRepository repository;
 
@@ -39,6 +39,7 @@ public class UserJpaResource {
         }
         return user;
 
+
     }
 
     //POST /users
@@ -60,6 +61,16 @@ public class UserJpaResource {
     public void deleteUsers(@PathVariable int id) {
 
         repository.deleteById(id);
+    }
+
+    @GetMapping ("/jpa/users/{id}/posts")
+    public List<Post> reterievePostsforUsers(@PathVariable int id) {
+        Optional<User> user=repository.findById(id);
+        if(user.isEmpty()) {
+            throw new UserNotFoundException("id"+id);
+        }
+      return user.get().getPosts();
+
     }
 
 
